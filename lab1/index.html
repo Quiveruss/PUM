@@ -11,12 +11,24 @@
     </canvas>
 
     <script>
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.beginPath();
-      ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-      ctx.fillStyle = "#FF0000";
-      ctx.fill();
+      var green = true;
+
+      while (true) {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+
+        if (green) {
+          ctx.fillStyle = "#008000";
+          green = false;
+        } else {
+          ctx.fillStyle = "#0000FF";
+          green = true;
+        }
+        ctx.fill();
+        sleep(1);
+      }
     </script>
   </body>
 </html>
