@@ -46,11 +46,16 @@
         ctx.fill();
       }
 
+      function updateGradient() {
+        drawCircleGradient();
+
+        requestAnimationFrame(updateGradient);
+      }
+
       setInterval(drawCircle, 1000);
       drawCircle();
 
-      setInterval(drawCircleGradient, 1000);
-      drawCircleGradient();
+      updateGradient();
     </script>
   </body>
 </html>
