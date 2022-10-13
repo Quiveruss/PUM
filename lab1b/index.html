@@ -41,7 +41,7 @@
       function drawCircleGradient() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
-        ctx.clearRect(150, 50, 80, 80);
+        ctx.clearRect(100, 0, 100, 100);
         ctx.beginPath();
         ctx.arc(150, 50, 40, 0, 2 * Math.PI);
         gradientColor = `rgb(0, ${greenCounter}, ${255 - greenCounter})`;
@@ -78,7 +78,7 @@
       function drawCircleGradientMove(yPosition) {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
-        ctx.clearRect(150, 50, 80, 80);
+        ctx.clearRect(200, 0, 100, 100);
         ctx.beginPath();
         ctx.arc(250, yPosition, 40, 0, 2 * Math.PI);
         gradientColor = `rgb(0, ${greenCounter}, ${255 - greenCounter})`;
@@ -117,7 +117,7 @@
           }
         }
 
-        requestAnimationFrame(updateGradient);
+        requestAnimationFrame(updateGradientMove);
       }
 
       updateGradientMove();
