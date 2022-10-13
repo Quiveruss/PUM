@@ -11,13 +11,13 @@
     </canvas>
 
     <script>
-      var green = true;
+      var green = false;
 
       function drawCircle() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         ctx.beginPath();
-        ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+        ctx.arc(50, 50, 40, 0, 2 * Math.PI);
 
         if (green) {
           ctx.fillStyle = "#008000";
@@ -29,7 +29,10 @@
         ctx.fill();
       }
 
+      function drawCircleGradient() {}
+
       setInterval(drawCircle, 1000);
+      drawCircle();
     </script>
   </body>
 </html>
