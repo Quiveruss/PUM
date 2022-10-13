@@ -11,11 +11,8 @@
     </canvas>
 
     <script>
+      // First circle.
       var green = false;
-      var greenCounter = 0;
-      var greenUp = true;
-
-      const gradientStep = 255 / 59;
 
       function drawCircle() {
         var c = document.getElementById("myCanvas");
@@ -35,6 +32,11 @@
 
       setInterval(drawCircle, 1000);
       drawCircle();
+
+      // Second circle.
+      var greenCounter = 0;
+      var greenUp = true;
+      const gradientStep = 255 / 59;
 
       function drawCircleGradient() {
         var c = document.getElementById("myCanvas");
@@ -63,6 +65,42 @@
             greenUp = true;
           }
         }
+
+        requestAnimationFrame(updateGradient);
+      }
+
+      updateGradient();
+
+      // Third circle.
+      function drawCircleGradientMove(yPosition) {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(150, 50, 80, 80);
+        ctx.beginPath();
+        ctx.arc(150, yPosition, 40, 0, 2 * Math.PI);
+        gradientColor = `rgb(0, ${greenCounter}, ${255 - greenCounter})`;
+        ctx.fillStyle = gradientColor;
+        ctx.fill();
+      }
+
+      function updateGradient() {
+        drawCircleGradientMove(yPosition);
+
+        if (greenUp) {
+          greenCounter += gradientStep;
+
+          if (greenCounter >= 255) {
+            greenUp = false;
+          }
+        } else {
+          greenCounter -= gradientStep;
+
+          if (greenCounter <= 0) {
+            greenUp = true;
+          }
+        }
+
+        if ()
 
         requestAnimationFrame(updateGradient);
       }
