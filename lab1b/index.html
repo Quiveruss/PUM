@@ -15,6 +15,8 @@
       var greenCounter = 0;
       var greenUp = true;
 
+      const gradientStep = 255 / 59;
+
       function drawCircle() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -31,6 +33,9 @@
         ctx.fill();
       }
 
+      setInterval(drawCircle, 1000);
+      drawCircle();
+
       function drawCircleGradient() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -46,24 +51,21 @@
         drawCircleGradient();
 
         if (greenUp) {
-          greenCounter += 1;
+          greenCounter += gradientStep;
 
-          if (greenCounter == 255) {
+          if (greenCounter >= 255) {
             greenUp = false;
           }
         } else {
-          greenCounter -= 1;
+          greenCounter -= gradientStep;
 
-          if (greenCounter == 0) {
+          if (greenCounter <= 0) {
             greenUp = true;
           }
         }
 
         requestAnimationFrame(updateGradient);
       }
-
-      setInterval(drawCircle, 1000);
-      drawCircle();
 
       updateGradient();
     </script>
