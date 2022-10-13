@@ -13,6 +13,7 @@
     <script>
       var green = false;
       var greenCounter = 0;
+      var greenUp = true;
 
       function drawCircle() {
         var c = document.getElementById("myCanvas");
@@ -42,6 +43,20 @@
 
       function updateGradient() {
         drawCircleGradient();
+
+        if (greenUp) {
+          greenCounter += 1;
+
+          if (greenCounter == 255) {
+            greenUp = false;
+          }
+        } else {
+          greenCounter -= 1;
+
+          if (greenCounter == 0) {
+            greenUp = true;
+          }
+        }
 
         requestAnimationFrame(updateGradient);
       }
