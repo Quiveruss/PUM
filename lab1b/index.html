@@ -72,16 +72,20 @@
       updateGradient();
 
       // Third circle.
+      var greenCounterMove = 0;
+      var greenUpMove = true;
       var moveUp = false;
       var yPosition = 50;
 
       function drawCircleGradientMove(yPosition) {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
-        ctx.clearRect(200, 0, 100, 100);
+        ctx.clearRect(200, 0, 100, 200);
         ctx.beginPath();
         ctx.arc(250, yPosition, 40, 0, 2 * Math.PI);
-        gradientColor = `rgb(0, ${greenCounter}, ${255 - greenCounter})`;
+        gradientColor = `rgb(0, ${greenCounterMove}, ${
+          255 - greenCounterMove
+        })`;
         ctx.fillStyle = gradientColor;
         ctx.fill();
       }
@@ -89,28 +93,28 @@
       function updateGradientMove() {
         drawCircleGradientMove(yPosition);
 
-        if (greenUp) {
-          greenCounter += gradientStep;
+        if (greenUpMove) {
+          greenCounterMove += gradientStep;
 
-          if (greenCounter >= 255) {
-            greenUp = false;
+          if (greenCounterMove >= 255) {
+            greenUpMove = false;
           }
         } else {
-          greenCounter -= gradientStep;
+          greenCounterMove -= gradientStep;
 
-          if (greenCounter <= 0) {
-            greenUp = true;
+          if (greenCounterMove <= 0) {
+            greenUpMove = true;
           }
         }
 
         if (moveUp) {
-          yPosition -= 1;
+          yPosition -= 2;
 
           if (yPosition == 50) {
             moveUp = false;
           }
         } else {
-          yPosition -= 1;
+          yPosition += 2;
 
           if (yPosition == 110) {
             moveUp = true;
