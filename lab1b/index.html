@@ -22,10 +22,10 @@
         ctx.arc(50, 50, 40, 0, 2 * Math.PI);
 
         if (green) {
-          ctx.fillStyle = "#008000";
+          ctx.fillStyle = `rgb(0, 255, 0)`;
           green = false;
         } else {
-          ctx.fillStyle = "#0000FF";
+          ctx.fillStyle = `rgb(0, 0, 255)`;
           green = true;
         }
         ctx.fill();
@@ -38,6 +38,7 @@
         ctx.beginPath();
         ctx.arc(150, 50, 40, 0, 2 * Math.PI);
         gradientColor = `rgb(0, ${greenCounter}, ${255 - greenCounter})`;
+        ctx.fillStyle = gradientColor;
         ctx.fill();
       }
 
