@@ -12,6 +12,7 @@
 
     <script>
       var green = false;
+      var green1 = false;
 
       function drawCircle() {
         var c = document.getElementById("myCanvas");
@@ -29,10 +30,27 @@
         ctx.fill();
       }
 
-      function drawCircleGradient() {}
+      function drawCircleGradient() {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(150, 50, 40, 0, 2 * Math.PI);
+
+        if (green1) {
+          ctx.fillStyle = "#008000";
+          green1 = false;
+        } else {
+          ctx.fillStyle = "#0000FF";
+          green1 = true;
+        }
+        ctx.fill();
+      }
 
       setInterval(drawCircle, 1000);
       drawCircle();
+
+      setInterval(drawCircleGradient, 1000);
+      drawCircleGradient();
     </script>
   </body>
 </html>
