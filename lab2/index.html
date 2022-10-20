@@ -17,14 +17,22 @@
       ctx.fillRect(0, 400, 600, 20);
 
       var stair = 0;
+      var timer = 0;
 
       function printStair(stair) {
-        ctx.fillRect(0 + 40 * stair, 200 + 40 * stair, 80, 200 - stair * 40);
+        ctx.fillRect(0 + 80 * stair, 200 + 40 * stair, 80, 200 - stair * 40);
       }
 
       function updateStairs() {
-        printStair(stair);
-        stair += 1;
+        if (stair < 5) {
+          if (timer == 60) {
+            timer = 0;
+            printStair(stair);
+            stair += 1;
+          } else {
+            timer += 1;
+          }
+        }
 
         requestAnimationFrame(updateStairs);
       }
