@@ -23,11 +23,13 @@
       }
 
       function updateStairs() {
-        setTimeout(printStair(stair), 1000);
+        printStair(stair);
         stair += 1;
 
         requestAnimationFrame(updateStairs);
       }
+
+      updateStairs();
     </script>
   </body>
 </html>
