@@ -64,6 +64,11 @@
             if (ballX < 480) {
               ballX += 2;
             }
+            if (ballY < 360) {
+              if (ballX > 100 && ballY < 200) {
+                ballY += 2;
+              }
+            }
           }
         }
         requestAnimationFrame(animate);
