@@ -23,7 +23,26 @@
         ctx.fillRect(0 + 80 * stair, 200 + 40 * stair, 80, 200 - stair * 40);
       }
 
-      function updateStairs() {
+      //updateStairs();
+
+      console.log("Hello!");
+      var ballX = 40;
+      var ballY = 160;
+
+      function printAllStairs() {
+        ctx.fillRect(0, 400, 600, 20);
+
+        for (var i = 0; i < 5; ++i) {
+          printStair(i);
+        }
+      }
+
+      function printBall(x, y) {
+        ctx.arc(x, y, 40, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      function animate() {
         if (stair < 5) {
           if (timer == 60) {
             timer = 0;
@@ -32,12 +51,15 @@
           } else {
             timer += 1;
           }
+        } else {
+          ctx.clearRect(0, 0, 800, 600);
+          printAllStairs();
+          printBall(ballX, ballY);
         }
-
-        requestAnimationFrame(updateStairs);
+        requestAnimationFrame(animate);
       }
 
-      updateStairs();
+      animate();
     </script>
   </body>
 </html>
