@@ -52,9 +52,13 @@
             timer += 1;
           }
         } else {
-          ctx.clearRect(0, 0, 800, 600);
-          printAllStairs();
-          printBall(ballX, ballY);
+          if (timer < 60) {
+            timer += 1;
+          } else {
+            ctx.clearRect(0, 0, 800, 600);
+            printAllStairs();
+            printBall(ballX, ballY);
+          }
         }
         requestAnimationFrame(animate);
       }
