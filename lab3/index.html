@@ -29,6 +29,7 @@
       };
 
       var bullets = [];
+      var comets = [];
 
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -70,6 +71,28 @@
         bullets = tmpBullets;
       }
 
+      function drawComets() {
+        comets.forEach((comet) => {
+          ctx.beginPath();
+          ctx.arc(comet.x, comet.y, 30, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function spawnComet() {
+        comets.push({
+          x: Math.floor(Math.random() * c.width),
+          y: 0,
+          speed: 3,
+        });
+      }
+
+      function moveComets() {
+        comets.forEach((comet) => {
+          comet.y += comet.speed;
+        });
+      }
+
       function update() {
         clear();
 
@@ -79,7 +102,11 @@
         drawBullets();
         moveBullets();
         checkBullets();
-        console.log(bullets);
+        //console.log(bullets);
+
+        drawComets();
+        moveComets();
+        console.log(comets);
 
         requestAnimationFrame(update);
       }
@@ -115,13 +142,13 @@
           e.key === "Left"
         ) {
           player.dx = 0;
-        } else if (e.key === " ") {
         }
       }
 
       update();
       document.addEventListener("keydown", keyDown);
       document.addEventListener("keyup", keyUp);
+      setInterval(spawnComet, 2000);
     </script>
   </body>
 </html>
