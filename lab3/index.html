@@ -28,6 +28,8 @@
         speed: 5,
       };
 
+      const bullets = [];
+
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
       }
@@ -48,11 +50,28 @@
         }
       }
 
+      function drawBullets() {
+        bullets.forEach((bullet) => {
+          ctx.beginPath();
+          ctx.arc(bullet.x, bullet.y, 10, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveBullets() {
+        bullets.forEach((bullet) => {
+          bullets.y += speed;
+        });
+      }
+
       function update() {
         clear();
 
         drawPlayer();
         newPos();
+
+        drawBullets();
+        moveBullets();
 
         requestAnimationFrame(update);
       }
@@ -65,11 +84,18 @@
         player.dx = -player.speed;
       }
 
+      function shoot() {
+        bullets.push({ x: player.x, y: player.y, speed: 5 });
+      }
+
       function keyDown(e) {
+        console.log(e.key);
         if (e.key === "ArrowRight" || e.key === "Right") {
           moveRight();
         } else if (e.key === "ArrowLeft" || e.key === "Left") {
           moveLeft();
+        } else if (e.key === " ") {
+          shoot();
         }
       }
 
