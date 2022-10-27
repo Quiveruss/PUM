@@ -13,6 +13,28 @@
     <script>
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
+
+      const player = {
+        x: 400,
+        y: 500,
+        w: 50,
+        h: 80,
+        dx: 5,
+      };
+
+      function drawPlayer() {
+        ctx.beginPath();
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+      }
+
+      function update() {
+        ctx.clearRect(0, 0, ctx.width, ctx.height);
+        drawPlayer();
+
+        requestAnimationFrame(update);
+      }
+
+      update();
     </script>
   </body>
 </html>
