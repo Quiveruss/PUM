@@ -65,9 +65,9 @@
       }
 
       function checkBullets() {
-        bullets = bullets.filter((bullet) => {
-          bullet.y > 10;
-        });
+        var tmpBullets = bullets.filter((bullet) => bullet.y > 0);
+
+        bullets = tmpBullets;
       }
 
       function update() {
@@ -79,6 +79,7 @@
         drawBullets();
         moveBullets();
         checkBullets();
+        console.log(bullets);
 
         requestAnimationFrame(update);
       }
