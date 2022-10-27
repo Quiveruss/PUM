@@ -24,22 +24,62 @@
         y: 500,
         w: 50,
         h: 80,
-        dx: 5,
+        dx: 0,
+        speed: 5,
       };
+
+      function clear() {
+        ctx.clearRect(0, 0, ctx.width, ctx.height);
+      }
 
       function drawPlayer() {
         ctx.beginPath();
         ctx.fillRect(player.x, player.y, player.w, player.h);
       }
 
+      function newPos() {
+        player.x += player.dx;
+      }
+
       function update() {
-        ctx.clearRect(0, 0, ctx.width, ctx.height);
+        clear();
+
         drawPlayer();
+        newPos();
 
         requestAnimationFrame(update);
       }
 
+      function moveRight() {
+        player.dx = player.speed;
+      }
+
+      function moveLeft() {
+        player.dx = -player.speed;
+      }
+
+      function keyDown(e) {
+        if (e.key === "ArrowRight" || e.key === "Right") {
+          moveRight();
+        } else if (e.key === "ArrowLeft" || e.key === "Left") {
+          moveLeft();
+        }
+      }
+
+      function keyUp(e) {
+        if (
+          e.key === "ArrowRight" ||
+          e.key === "Right" ||
+          e.key === "ArrowLeft" ||
+          e.key === "Left"
+        ) {
+          player.dx = 0;
+        }
+      }
+
       update();
+      document.addEventListener("keydown", keyDown);
+      document.addEventListener("keyup", keyUp);
     </script>
   </body>
 </html>
