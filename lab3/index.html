@@ -28,7 +28,7 @@
         speed: 5,
       };
 
-      const bullets = [];
+      var bullets = [];
 
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -60,7 +60,13 @@
 
       function moveBullets() {
         bullets.forEach((bullet) => {
-          bullets.y += speed;
+          bullet.y -= bullet.speed;
+        });
+      }
+
+      function checkBullets() {
+        bullets = bullets.filter((bullet) => {
+          bullet.y > 10;
         });
       }
 
@@ -72,6 +78,7 @@
 
         drawBullets();
         moveBullets();
+        checkBullets();
 
         requestAnimationFrame(update);
       }
@@ -85,7 +92,7 @@
       }
 
       function shoot() {
-        bullets.push({ x: player.x, y: player.y, speed: 5 });
+        bullets.push({ x: player.x + player.w / 2, y: player.y, speed: 5 });
       }
 
       function keyDown(e) {
@@ -107,6 +114,7 @@
           e.key === "Left"
         ) {
           player.dx = 0;
+        } else if (e.key === " ") {
         }
       }
 
