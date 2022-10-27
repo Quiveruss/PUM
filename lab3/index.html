@@ -54,7 +54,7 @@
       function drawBullets() {
         bullets.forEach((bullet) => {
           ctx.beginPath();
-          ctx.arc(bullet.x, bullet.y, 10, 0, 2 * Math.PI);
+          ctx.arc(bullet.x, bullet.y, bullet.r, 0, 2 * Math.PI);
           ctx.fill();
         });
       }
@@ -66,24 +66,24 @@
       }
 
       function checkBullets() {
-        var tmpBullets = bullets.filter((bullet) => bullet.y > 0);
-
-        bullets = tmpBullets;
+        bullets = bullets.filter((bullet) => bullet.y > 0);
       }
 
       function drawComets() {
         comets.forEach((comet) => {
           ctx.beginPath();
-          ctx.arc(comet.x, comet.y, 30, 0, 2 * Math.PI);
+          ctx.arc(comet.x, comet.y, comet.r, 0, 2 * Math.PI);
           ctx.fill();
         });
       }
 
       function spawnComet() {
         comets.push({
-          x: Math.floor(Math.random() * c.width),
+          x: Math.floor(Math.random() * (c.width - 30)),
           y: 0,
+          r: 30,
           speed: 3,
+          shoot: false,
         });
       }
 
@@ -91,6 +91,24 @@
         comets.forEach((comet) => {
           comet.y += comet.speed;
         });
+      }
+
+      /*
+      function detectDestroyed() {
+        comets.forEach(comet => {
+          bullets.forEach(bullet => {
+            if ()
+          })
+        })
+      }
+      */
+
+      function checkCommets() {
+        //detectDestroyed();
+
+        comets = comets.filter(
+          (comet) => comet.y < c.height + comet.r || comet.shoot === true
+        );
       }
 
       function update() {
@@ -102,11 +120,10 @@
         drawBullets();
         moveBullets();
         checkBullets();
-        //console.log(bullets);
 
         drawComets();
         moveComets();
-        console.log(comets);
+        checkCommets();
 
         requestAnimationFrame(update);
       }
@@ -120,7 +137,12 @@
       }
 
       function shoot() {
-        bullets.push({ x: player.x + player.w / 2, y: player.y, speed: 5 });
+        bullets.push({
+          x: player.x + player.w / 2,
+          y: player.y,
+          r: 10,
+          speed: 5,
+        });
       }
 
       function keyDown(e) {
