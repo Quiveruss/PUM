@@ -44,6 +44,8 @@
       };
       */
 
+      var strips = 0;
+
       const player = {
         x: 400,
         y: 500,
@@ -65,6 +67,17 @@
         ctx.fillRect(150, 0, 500, c.height);
         ctx.fillStyle = "green";
         ctx.fillRect(650, 0, 150, c.height);
+
+        for (var i = 0; i < 5; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(390, i * 50 + strips * 50, 20, 50);
+        }
+
+        strips += 1;
+
+        if (strips === c.height) {
+          strips = 0;
+        }
       }
 
       function drawPlayer() {
