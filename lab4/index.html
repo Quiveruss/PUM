@@ -45,6 +45,7 @@
       */
 
       var strips = -100;
+      var border = -100;
 
       const player = {
         x: 400,
@@ -63,16 +64,18 @@
         ctx.beginPath();
         ctx.fillStyle = "green";
         ctx.fillRect(0, 0, 150, c.height);
+        ctx.fillStyle = "red";
+        ctx.fillRect(130, 0, 20, c.height);
         ctx.fillStyle = "gray";
         ctx.fillRect(150, 0, 600, c.height);
         ctx.fillStyle = "green";
         ctx.fillRect(650, 0, 150, c.height);
+        ctx.fillStyle = "red";
+        ctx.fillRect(650, 0, 20, c.height);
 
-        for (var i = 0; i < 10; ++i) {
+        for (var i = 0; i < 20; ++i) {
           ctx.fillStyle = "white";
-          ctx.fillRect(130, i * 40 + strips, 20, 30);
-          ctx.fillStyle = "red";
-          ctx.fillRect(130, i * 40 + strips + 20, 20, 30);
+          ctx.fillRect(130, i * 60 + border, 20, 30);
         }
 
         for (var i = 0; i < 10; ++i) {
@@ -85,10 +88,20 @@
           ctx.fillRect(500, i * 100 + strips, 20, 50);
         }
 
+        for (var i = 0; i < 20; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(650, i * 60 + border, 20, 30);
+        }
+
         strips += 10;
+        border += 5;
 
         if (strips === 100) {
           strips = -100;
+        }
+
+        if (border === 100) {
+          border = -100;
         }
       }
 
