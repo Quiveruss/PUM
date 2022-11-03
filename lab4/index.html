@@ -44,7 +44,7 @@
       };
       */
 
-      var strips = 0;
+      var strips = -100;
 
       const player = {
         x: 400,
@@ -64,20 +64,36 @@
         ctx.fillStyle = "green";
         ctx.fillRect(0, 0, 150, c.height);
         ctx.fillStyle = "gray";
-        ctx.fillRect(150, 0, 500, c.height);
+        ctx.fillRect(150, 0, 600, c.height);
         ctx.fillStyle = "green";
         ctx.fillRect(650, 0, 150, c.height);
 
-        for (var i = 0; i < 5; ++i) {
+        for (var i = 0; i < 10; ++i) {
           ctx.fillStyle = "white";
-          ctx.fillRect(390, i * 50 + strips * 50, 20, 50);
+          ctx.fillRect(300, i * 100 + strips, 20, 50);
+          ctx.fillStyle = "red";
         }
 
-        strips += 1;
-
-        if (strips === c.height) {
-          strips = 0;
+        for (var i = 0; i < 10; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(300, i * 100 + strips, 20, 50);
         }
+
+        for (var i = 0; i < 10; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(500, i * 100 + strips, 20, 50);
+        }
+
+        strips += 10;
+
+        if (strips === 100) {
+          strips = -100;
+        }
+      }
+
+      for (var i = 0; i < 10; ++i) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(300, i * 100 + strips, 20, 50);
       }
 
       function drawPlayer() {
