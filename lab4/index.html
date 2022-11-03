@@ -53,6 +53,7 @@
         w: 50,
         h: 80,
         dx: 0,
+        dy: 0,
         speed: 5,
       };
 
@@ -125,6 +126,15 @@
         if (player.x + player.w > 650) {
           player.x = 650 - player.w;
         }
+
+        player.y += player.dy;
+
+        if (player.y < 0) {
+          player.y = 0;
+        }
+        if (player.y + player.h > c.height) {
+          player.y = c.height - player.h;
+        }
       }
 
       function update() {
@@ -145,12 +155,24 @@
         player.dx = -player.speed;
       }
 
+      function moveUp() {
+        player.dy = -player.speed;
+      }
+
+      function moveDown() {
+        player.dy = player.speed;
+      }
+
       function keyDown(e) {
         console.log(e.key);
         if (e.key === "ArrowRight" || e.key === "Right") {
           moveRight();
         } else if (e.key === "ArrowLeft" || e.key === "Left") {
           moveLeft();
+        } else if (e.key === "ArrowUp" || e.key === "Up") {
+          moveUp();
+        } else if (e.key === "ArrowDown" || e.key === "Down") {
+          moveDown();
         }
       }
 
@@ -162,6 +184,13 @@
           e.key === "Left"
         ) {
           player.dx = 0;
+        } else if (
+          e.key === "ArrowUp" ||
+          e.key === "Up" ||
+          e.key === "ArrowDown" ||
+          e.key === "Down"
+        ) {
+          player.dy = 0;
         }
       }
 
