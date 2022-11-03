@@ -19,6 +19,7 @@
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
 
+      /*
       const road = {
         leftGreen: {
           x: 0,
@@ -41,6 +42,7 @@
           h: c.height,
         },
       };
+      */
 
       const player = {
         x: 400,
@@ -58,12 +60,7 @@
       function drawScenery() {
         ctx.beginPath();
         ctx.fillStyle = "green";
-        ctx.fillRect(
-          road.leftGreen.x,
-          road.leftGreen.y,
-          road.leftGreen.w,
-          road.leftGreen.h
-        );
+        ctx.fillRect(0, 0, 150, c.height);
         ctx.fillStyle = "gray";
         ctx.fillRect(150, 0, 500, c.height);
         ctx.fillStyle = "green";
@@ -79,11 +76,11 @@
       function newPos() {
         player.x += player.dx;
 
-        if (player.x < 0) {
-          player.x = 0;
+        if (player.x < 150) {
+          player.x = 150;
         }
-        if (player.x + player.w > c.width) {
-          player.x = c.width - player.w;
+        if (player.x + player.w > 650) {
+          player.x = 650 - player.w;
         }
       }
 
