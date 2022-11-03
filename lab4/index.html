@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab3</title>
+  </head>
+  <body>
+    <h1>Lab 3</h1>
+
+    <canvas
+      id="myCanvas"
+      width="800"
+      height="600"
+      style="border: 3px solid black"
+    >
+      Your browser does not support the HTML canvas tag.
+    </canvas>
+
+    <script>
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      const player = {
+        x: 400,
+        y: 500,
+        w: 50,
+        h: 80,
+        dx: 0,
+        speed: 5,
+      };
+
+      var bullets = [];
+      var comets = [];
+
+      function clear() {
+        ctx.clearRect(0, 0, c.width, c.height);
+      }
+
+      function drawPlayer() {
+        ctx.beginPath();
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+      }
+
+      function newPos() {
+        player.x += player.dx;
+
+        if (player.x < 0) {
+          player.x = 0;
+        }
+        if (player.x + player.w > c.width) {
+          player.x = c.width - player.w;
+        }
+      }
+
+      function drawBullets() {
+        bullets.forEach((bullet) => {
+          ctx.beginPath();
+          ctx.arc(bullet.x, bullet.y, bullet.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveBullets() {
+        bullets.forEach((bullet) => {
+          bullet.y -= bullet.speed;
+        });
+      }
+
+      function checkBullets() {
+        bullets = bullets.filter((bullet) => bullet.y > 0);
+      }
+
+      function drawComets() {
+        comets.forEach((comet) => {
+          ctx.beginPath();
+          ctx.arc(comet.x, comet.y, comet.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function spawnComet() {
+        comets.push({
+          x: Math.floor(Math.random() * (c.width - 30)),
+          y: 0,
+          r: 30,
+          speed: 3,
+          shoot: false,
+        });
+      }
+
+      function moveComets() {
+        comets.forEach((comet) => {
+          comet.y += comet.speed;
+        });
+      }
+
+      /*
+      function detectDestroyed() {
+        comets.forEach(comet => {
+          bullets.forEach(bullet => {
+            if ()
+          })
+        })
+      }
+      */
+
+      function checkCommets() {
+        //detectDestroyed();
+
+        comets = comets.filter(
+          (comet) => comet.y < c.height + comet.r || comet.shoot === true
+        );
+      }
+
+      function update() {
+        clear();
+
+        drawPlayer();
+        newPos();
+
+        drawBullets();
+        moveBullets();
+        checkBullets();
+
+        drawComets();
+        moveComets();
+        checkCommets();
+
+        requestAnimationFrame(update);
+      }
+
+      function moveRight() {
+        player.dx = player.speed;
+      }
+
+      function moveLeft() {
+        player.dx = -player.speed;
+      }
+
+      function shoot() {
+        bullets.push({
+          x: player.x + player.w / 2,
+          y: player.y,
+          r: 10,
+          speed: 5,
+        });
+      }
+
+      function keyDown(e) {
+        console.log(e.key);
+        if (e.key === "ArrowRight" || e.key === "Right") {
+          moveRight();
+        } else if (e.key === "ArrowLeft" || e.key === "Left") {
+          moveLeft();
+        } else if (e.key === " ") {
+          shoot();
+        }
+      }
+
+      function keyUp(e) {
+        if (
+          e.key === "ArrowRight" ||
+          e.key === "Right" ||
+          e.key === "ArrowLeft" ||
+          e.key === "Left"
+        ) {
+          player.dx = 0;
+        }
+      }
+
+      update();
+      document.addEventListener("keydown", keyDown);
+      document.addEventListener("keyup", keyUp);
+      setInterval(spawnComet, 2000);
+    </script>
+  </body>
+</html>
