@@ -19,6 +19,29 @@
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
 
+      const road = {
+        leftGreen: {
+          x: 0,
+          y: 0,
+          w: 150,
+          h: c.height,
+        },
+
+        track: {
+          x: leftGreen.width,
+          y: 0,
+          w: 150,
+          h: c.height,
+        },
+
+        rightGreen: {
+          x: leftGreen.w + track.w,
+          y: 0,
+          w: 150,
+          h: c.height,
+        },
+      };
+
       const player = {
         x: 400,
         y: 500,
@@ -28,28 +51,28 @@
         speed: 5,
       };
 
-      var bullets = [];
-      var comets = [];
-
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
       }
 
       function drawScenery() {
         ctx.beginPath();
-        ctx.fillRect(0, 0, 100, ctx.height);
         ctx.fillStyle = "green";
-        ctx.fill();
-        ctx.fillRect(100, 0, 200, ctx.height);
+        ctx.fillRect(
+          road.leftGreen.x,
+          road.leftGreen.y,
+          road.leftGreen.w,
+          road.leftGreen.h
+        );
         ctx.fillStyle = "gray";
-        ctx.fill();
-        ctx.fillRect(300, 0, 100, ctx.height);
+        ctx.fillRect(150, 0, 500, c.height);
         ctx.fillStyle = "green";
-        ctx.fill();
+        ctx.fillRect(650, 0, 150, c.height);
       }
 
       function drawPlayer() {
         ctx.beginPath();
+        ctx.fillStyle = "black";
         ctx.fillRect(player.x, player.y, player.w, player.h);
       }
 
