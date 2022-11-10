@@ -32,6 +32,8 @@
         speed: 5,
       };
 
+      const obstacles = [];
+
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
       }
@@ -116,12 +118,44 @@
         }
       }
 
+      function drawObstacles() {
+        obstacles.forEach((obstacle) => {
+          ctx.beginPath();
+          ctx.arc(obstacle.x, obstacle.y, obstacle.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveObstacles() {
+        obstacle.forEach((obstacle) => {
+          obstacle.y -= obstacle.speed;
+        });
+      }
+
+      function checkObstacles() {
+        obstacles = obstacles.filter((obstacle) => obstacle.y < c.height);
+      }
+
+      function spawnObstacle() {
+        obstacles.push({
+          x: Math.floor(Math.random() * (c.width - 30)),
+          y: 0,
+          r: 30,
+          speed: 3,
+          shoot: false,
+        });
+      }
+
       function update() {
         clear();
         drawScenery();
 
         drawPlayer();
         newPos();
+
+        drawObstacles();
+        moveObstacles();
+        checkObstacles();
 
         requestAnimationFrame(update);
       }
