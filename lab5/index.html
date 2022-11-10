@@ -191,7 +191,7 @@
           rect.x < circle.x &&
           circle.x < rect.x + rect.w &&
           rect.y < circle.y &&
-          circle.y < rect.y + rect.height
+          circle.y < rect.y + rect.h
         ) {
           return true;
         } else {
@@ -205,6 +205,11 @@
             player.alive = false;
           }
         });
+      }
+
+      function displayDeath() {
+        ctx.font = "100px serif color:red";
+        ctx.fillText("Game over", c.width / 2, c.height / 2);
       }
 
       function update() {
@@ -227,6 +232,8 @@
 
         if (player.alive) {
           requestAnimationFrame(update);
+        } else {
+          displayDeath();
         }
       }
 
