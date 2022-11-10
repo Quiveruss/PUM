@@ -133,12 +133,14 @@
       }
 
       function checkObstacles() {
-        obstacles = obstacles.filter((obstacle) => obstacle.y < c.height);
+        obstacles = obstacles.filter(
+          (obstacle) => obstacle.y < c.height + obstacle.r
+        );
       }
 
       function spawnObstacle() {
         obstacles.push({
-          x: Math.floor(Math.random() * (c.width - 30)),
+          x: Math.floor(Math.random() * 540 + 180),
           y: 0,
           r: 30,
           speed: 3,
