@@ -170,7 +170,7 @@
 
       function checkShoots() {
         obstacles.forEach((obstacle) => {
-          bullets.forEach((obstacle) => {
+          bullets.forEach((bullet) => {
             const dx = obstacle.x - bullet.x;
             const dy = obstacle.y - bullet.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -200,6 +200,8 @@
         drawBullets();
         moveBullets();
         checkBullets();
+
+        checkShoots();
 
         requestAnimationFrame(update);
       }
