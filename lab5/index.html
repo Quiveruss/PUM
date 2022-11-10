@@ -146,7 +146,7 @@
           y: 0,
           r: 30,
           speed: 3,
-          shoot: false,
+          remove: false,
         });
       }
 
@@ -166,6 +166,24 @@
 
       function checkBullets() {
         bullets = bullets.filter((bullet) => bullet.y > 0);
+      }
+
+      function checkShoots() {
+        obstacles.forEach((obstacle) => {
+          bullets.forEach((obstacle) => {
+            const dx = obstacle.x - bullet.x;
+            const dy = obstacle.y - bullet.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < obstacle.r + bullet.r) {
+              obstacle.remove = true;
+              bullet.remove = true;
+            }
+          });
+        });
+
+        obstacles = obstacles.filter((obstacle) => obstacle.remove == false);
+        bullets = bullets.filter((bullet) => bullet.remove == false);
       }
 
       function update() {
@@ -208,6 +226,7 @@
           y: player.y,
           r: 10,
           speed: 5,
+          remove: false,
         });
       }
 
