@@ -30,9 +30,11 @@
         dx: 0,
         dy: 0,
         speed: 5,
+        alive: true,
       };
 
       var obstacles = [];
+      var bullets = [];
 
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -148,6 +150,24 @@
         });
       }
 
+      function drawBullets() {
+        bullets.forEach((bullet) => {
+          ctx.beginPath();
+          ctx.arc(bullet.x, bullet.y, bullet.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveBullets() {
+        bullets.forEach((bullet) => {
+          bullet.y -= bullet.speed;
+        });
+      }
+
+      function checkBullets() {
+        bullets = bullets.filter((bullet) => bullet.y > 0);
+      }
+
       function update() {
         clear();
         drawScenery();
@@ -158,6 +178,10 @@
         drawObstacles();
         moveObstacles();
         checkObstacles();
+
+        drawBullets();
+        moveBullets();
+        checkBullets();
 
         requestAnimationFrame(update);
       }
@@ -178,6 +202,15 @@
         player.dy = player.speed;
       }
 
+      function shoot() {
+        bullets.push({
+          x: player.x + player.w / 2,
+          y: player.y,
+          r: 10,
+          speed: 5,
+        });
+      }
+
       function keyDown(e) {
         console.log(e.key);
         if (e.key === "ArrowRight" || e.key === "Right") {
@@ -188,6 +221,8 @@
           moveUp();
         } else if (e.key === "ArrowDown" || e.key === "Down") {
           moveDown();
+        } else if (e.key === " ") {
+          shoot();
         }
       }
 
