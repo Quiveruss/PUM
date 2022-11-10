@@ -186,6 +186,27 @@
         bullets = bullets.filter((bullet) => bullet.remove == false);
       }
 
+      function detectCollisionCircleRect(circle, rect) {
+        if (
+          rect.x < circle.x &&
+          circle.x < rect.x + rect.w &&
+          rect.y < circle.y &&
+          circle.y < rect.y + rect.height
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      function checkDeath() {
+        obstacles.forEach((obstacle) => {
+          if (detectCollisionCircleRect(obstacle, player)) {
+            player.alive = false;
+          }
+        });
+      }
+
       function update() {
         clear();
         drawScenery();
@@ -202,8 +223,11 @@
         checkBullets();
 
         checkShoots();
+        checkDeath();
 
-        requestAnimationFrame(update);
+        if (player.alive) {
+          requestAnimationFrame(update);
+        }
       }
 
       function moveRight() {
