@@ -31,6 +31,7 @@
         dy: 0,
         speed: 5,
         alive: true,
+        bonuses: 0,
       };
 
       var obstacles = [];
@@ -214,6 +215,12 @@
         ctx.fillText("Game over", c.width / 2, c.height / 2);
       }
 
+      function displayBonuses() {
+        ctx.font = "40px arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(`Bonuses: ${player.bonuses}`, 0, 40);
+      }
+
       function update() {
         clear();
         drawScenery();
@@ -231,6 +238,8 @@
 
         checkShoots();
         checkDeath();
+
+        displayBonuses();
 
         if (player.alive) {
           requestAnimationFrame(update);
