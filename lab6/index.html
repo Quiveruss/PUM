@@ -224,7 +224,7 @@
 
       function spawnBonus() {
         bonuses.push({
-          x: Math.floor(Math.random() * 460 + 180),
+          x: Math.floor(Math.random() * 440 + 180),
           y: 0,
           w: 20,
           h: 20,
@@ -252,6 +252,22 @@
         bonuses = bonuses.filter((bonus) => c.height + bonus.h);
       }
 
+      function checkCollections() {
+        bonuses.forEach((bonus) => {
+          if (
+            bonus.x < player.x + player.w &&
+            bonus.x + bonus.w > player.x &&
+            bonus.y < player.y + player.h &&
+            bonus.h + bonus.y > player.y
+          ) {
+            bonus.remove = true;
+            player.bonuses += 1;
+          }
+        });
+
+        bonuses = bonuses.filter((bonus) => bonus.remove == false);
+      }
+
       function update() {
         clear();
         drawScenery();
@@ -274,6 +290,7 @@
         drawBonuses();
         moveBonuses();
         checkBonuses();
+        checkCollections();
 
         if (player.alive) {
           requestAnimationFrame(update);
