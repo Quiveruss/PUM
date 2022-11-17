@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab5</title>
+  </head>
+  <body>
+    <h1>Lab 5</h1>
+
+    <canvas
+      id="myCanvas"
+      width="800"
+      height="600"
+      style="border: 3px solid black"
+    >
+      Your browser does not support the HTML canvas tag.
+    </canvas>
+
+    <script>
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      var strips = -100;
+      var border = -200;
+
+      const player = {
+        x: 400,
+        y: 510,
+        w: 50,
+        h: 80,
+        dx: 0,
+        dy: 0,
+        speed: 5,
+        alive: true,
+      };
+
+      var obstacles = [];
+      var bullets = [];
+
+      function clear() {
+        ctx.clearRect(0, 0, c.width, c.height);
+      }
+
+      function drawScenery() {
+        ctx.beginPath();
+        ctx.fillStyle = "green";
+        ctx.fillRect(0, 0, 150, c.height);
+        ctx.fillStyle = "red";
+        ctx.fillRect(130, 0, 20, c.height);
+        ctx.fillStyle = "gray";
+        ctx.fillRect(150, 0, 500, c.height);
+        ctx.fillStyle = "green";
+        ctx.fillRect(650, 0, 150, c.height);
+        ctx.fillStyle = "red";
+        ctx.fillRect(650, 0, 20, c.height);
+
+        // Left road border
+        for (var i = 0; i < 20; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(130, i * 60 + border, 20, 30);
+        }
+
+        // Left street stripes
+        for (var i = 0; i < 10; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(300, i * 100 + strips, 20, 50);
+        }
+
+        // Right street stripes
+        for (var i = 0; i < 10; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(500, i * 100 + strips, 20, 50);
+        }
+
+        // Right road border
+        for (var i = 0; i < 20; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(650, i * 60 + border, 20, 30);
+        }
+
+        strips += 10;
+        border += 5;
+
+        if (strips === 100) {
+          strips = -100;
+        }
+
+        if (border === 40) {
+          border = -200;
+        }
+      }
+
+      for (var i = 0; i < 10; ++i) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(300, i * 100 + strips, 20, 50);
+      }
+
+      function drawPlayer() {
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+      }
+
+      function newPos() {
+        player.x += player.dx;
+
+        if (player.x < 150) {
+          player.x = 150;
+        }
+        if (player.x + player.w > 650) {
+          player.x = 650 - player.w;
+        }
+
+        player.y += player.dy;
+
+        if (player.y < 0) {
+          player.y = 0;
+        }
+        if (player.y + player.h > c.height) {
+          player.y = c.height - player.h;
+        }
+      }
+
+      function drawObstacles() {
+        obstacles.forEach((obstacle) => {
+          ctx.beginPath();
+          ctx.arc(obstacle.x, obstacle.y, obstacle.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveObstacles() {
+        obstacles.forEach((obstacle) => {
+          obstacle.y += obstacle.speed;
+        });
+      }
+
+      function checkObstacles() {
+        obstacles = obstacles.filter(
+          (obstacle) => obstacle.y < c.height + obstacle.r
+        );
+      }
+
+      function spawnObstacle() {
+        obstacles.push({
+          x: Math.floor(Math.random() * 470 + 180),
+          y: 0,
+          r: 30,
+          speed: 3,
+          remove: false,
+        });
+      }
+
+      function drawBullets() {
+        bullets.forEach((bullet) => {
+          ctx.beginPath();
+          ctx.arc(bullet.x, bullet.y, bullet.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveBullets() {
+        bullets.forEach((bullet) => {
+          bullet.y -= bullet.speed;
+        });
+      }
+
+      function checkBullets() {
+        bullets = bullets.filter((bullet) => bullet.y > 0);
+      }
+
+      function checkShoots() {
+        obstacles.forEach((obstacle) => {
+          bullets.forEach((bullet) => {
+            const dx = obstacle.x - bullet.x;
+            const dy = obstacle.y - bullet.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < obstacle.r + bullet.r) {
+              obstacle.remove = true;
+              bullet.remove = true;
+            }
+          });
+        });
+
+        obstacles = obstacles.filter((obstacle) => obstacle.remove == false);
+        bullets = bullets.filter((bullet) => bullet.remove == false);
+      }
+
+      function detectCollisionCircleRect(circle, rect) {
+        if (
+          rect.x < circle.x &&
+          circle.x < rect.x + rect.w &&
+          rect.y < circle.y &&
+          circle.y < rect.y + rect.h
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      function checkDeath() {
+        obstacles.forEach((obstacle) => {
+          if (detectCollisionCircleRect(obstacle, player)) {
+            player.alive = false;
+          }
+        });
+      }
+
+      function displayDeath() {
+        ctx.font = "100px serif color:red";
+        ctx.fillText("Game over", c.width / 2, c.height / 2);
+      }
+
+      function update() {
+        clear();
+        drawScenery();
+
+        drawPlayer();
+        newPos();
+
+        drawObstacles();
+        moveObstacles();
+        checkObstacles();
+
+        drawBullets();
+        moveBullets();
+        checkBullets();
+
+        checkShoots();
+        checkDeath();
+
+        if (player.alive) {
+          requestAnimationFrame(update);
+        } else {
+          displayDeath();
+        }
+      }
+
+      function moveRight() {
+        player.dx = player.speed;
+      }
+
+      function moveLeft() {
+        player.dx = -player.speed;
+      }
+
+      function moveUp() {
+        player.dy = -player.speed;
+      }
+
+      function moveDown() {
+        player.dy = player.speed;
+      }
+
+      function shoot() {
+        bullets.push({
+          x: player.x + player.w / 2,
+          y: player.y,
+          r: 10,
+          speed: 5,
+          remove: false,
+        });
+      }
+
+      function keyDown(e) {
+        console.log(e.key);
+        if (e.key === "ArrowRight" || e.key === "Right") {
+          moveRight();
+        } else if (e.key === "ArrowLeft" || e.key === "Left") {
+          moveLeft();
+        } else if (e.key === "ArrowUp" || e.key === "Up") {
+          moveUp();
+        } else if (e.key === "ArrowDown" || e.key === "Down") {
+          moveDown();
+        } else if (e.key === " ") {
+          shoot();
+        }
+      }
+
+      function keyUp(e) {
+        if (
+          e.key === "ArrowRight" ||
+          e.key === "Right" ||
+          e.key === "ArrowLeft" ||
+          e.key === "Left"
+        ) {
+          player.dx = 0;
+        } else if (
+          e.key === "ArrowUp" ||
+          e.key === "Up" ||
+          e.key === "ArrowDown" ||
+          e.key === "Down"
+        ) {
+          player.dy = 0;
+        }
+      }
+
+      update();
+      document.addEventListener("keydown", keyDown);
+      document.addEventListener("keyup", keyUp);
+      setInterval(spawnObstacle, 2000);
+    </script>
+  </body>
+</html>
