@@ -36,6 +36,7 @@
 
       var obstacles = [];
       var bullets = [];
+      var bonuses = [];
 
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -215,10 +216,40 @@
         ctx.fillText("Game over", c.width / 2, c.height / 2);
       }
 
-      function displayBonuses() {
+      function displayBonusesInfo() {
         ctx.font = "40px arial";
         ctx.fillStyle = "white";
         ctx.fillText(`Bonuses: ${player.bonuses}`, 0, 40);
+      }
+
+      function spawnBonus() {
+        bonuses.push({
+          x: Math.floor(Math.random() * 460 + 180),
+          y: 0,
+          w: 20,
+          h: 20,
+          speed: 3,
+          remove: false,
+        });
+      }
+
+      function drawBonuses() {
+        bonuses.forEach((bonus) => {
+          ctx.beginPath();
+          ctx.fillStyle = "yellow";
+          ctx.rect(bonus.x, bonus.y, bonus.w, bonus.h);
+          ctx.fill();
+        });
+      }
+
+      function moveBonuses() {
+        bonuses.forEach((bonus) => {
+          bonus.y += bonus.speed;
+        });
+      }
+
+      function checkBonuses() {
+        bonuses = bonuses.filter((bonus) => c.height + bonus.h);
       }
 
       function update() {
@@ -239,7 +270,10 @@
         checkShoots();
         checkDeath();
 
-        displayBonuses();
+        displayBonusesInfo();
+        drawBonuses();
+        moveBonuses();
+        checkBonuses();
 
         if (player.alive) {
           requestAnimationFrame(update);
@@ -311,6 +345,7 @@
       document.addEventListener("keydown", keyDown);
       document.addEventListener("keyup", keyUp);
       setInterval(spawnObstacle, 2000);
+      setInterval(spawnBonus, 2000);
     </script>
   </body>
 </html>
