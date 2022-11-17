@@ -44,11 +44,6 @@
       }
 
       function drawScenery() {
-        ctx.translate(c.width / 2, c.height / 2);
-        ctx.rotate((rotateAngle * Math.PI) / 180);
-        ctx.translate(-c.width / 2, -c.height / 2);
-
-        rotateAngle += 1;
         ctx.beginPath();
         ctx.fillStyle = "green";
         ctx.fillRect(0, 0, 150, c.height);
@@ -95,8 +90,6 @@
         if (border === 40) {
           border = -200;
         }
-
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
       }
 
       for (var i = 0; i < 10; ++i) {
@@ -133,6 +126,7 @@
       function drawObstacles() {
         obstacles.forEach((obstacle) => {
           ctx.beginPath();
+          ctx.fillStyle = "black";
           ctx.arc(obstacle.x, obstacle.y, obstacle.r, 0, 2 * Math.PI);
           ctx.fill();
         });
@@ -163,6 +157,7 @@
       function drawBullets() {
         bullets.forEach((bullet) => {
           ctx.beginPath();
+          ctx.fillStyle = "black";
           ctx.arc(bullet.x, bullet.y, bullet.r, 0, 2 * Math.PI);
           ctx.fill();
         });
@@ -276,12 +271,28 @@
         bonuses = bonuses.filter((bonus) => bonus.remove == false);
       }
 
+      function changeAngle() {
+        var indicator = Math.random();
+        const threshold1 = 0.3;
+        const threshold2 = 0.6;
+
+        if (indicator < threshold1) {
+          rotateAngle += 10;
+        } else if (indicator >= threshold1 && indicator < threshold2) {
+          rotateAngle -= 10;
+        }
+      }
+
       function update() {
         clear();
+
+        ctx.translate(c.width / 2, c.height / 2);
+        ctx.rotate((rotateAngle * Math.PI) / 180);
+        ctx.translate(-c.width / 2, -c.height / 2);
+
         drawScenery();
 
-        drawPlayer();
-        newPos();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         drawObstacles();
         moveObstacles();
@@ -299,6 +310,9 @@
         moveBonuses();
         checkBonuses();
         checkCollections();
+
+        drawPlayer();
+        newPos();
 
         if (player.alive) {
           requestAnimationFrame(update);
@@ -371,6 +385,7 @@
       document.addEventListener("keyup", keyUp);
       setInterval(spawnObstacle, 2000);
       setInterval(spawnBonus, 2000);
+      setInterval(changeAngle, 2000);
     </script>
   </body>
 </html>
