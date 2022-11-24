@@ -21,9 +21,6 @@
       var rotateAngle = 0;
       var rotateCount = 0;
 
-      var strips = -100;
-      var border = -200;
-
       const player = {
         x: 400,
         y: 510,
@@ -50,6 +47,53 @@
           w: 500,
           h: c.height + 400,
         },
+
+        edgesRed: {
+          left: {
+            x: 130,
+            y: -200,
+            w: 20,
+            h: c.height + 400,
+          },
+          right: {
+            x: 650,
+            y: -200,
+            w: 20,
+            h: c.height + 400,
+          },
+        },
+
+        strips: {
+          left: {
+            x: 650,
+            y: -200,
+            w: 20,
+            h: c.height + 400,
+          },
+          right: {
+            x: 650,
+            y: -200,
+            w: 20,
+            h: c.height + 400,
+          },
+        },
+
+        //-100,
+        edgesWhite: {
+          left: {
+            x: 130,
+            y: -200,
+            w: 20,
+            h: c.height + 400,
+          },
+          right: {
+            x: 650,
+            y: -200,
+            w: 20,
+            h: c.height + 400,
+          },
+        },
+        //-200,
       };
 
       var obstacles = [];
@@ -63,21 +107,40 @@
       function drawScenery() {
         ctx.beginPath();
 
+        // Grass
         ctx.fillStyle = "green";
         ctx.fillRect(map.grass.x, map.grass.y, map.grass.w, map.grass.h);
 
+        // Main road
         ctx.fillStyle = "gray";
         ctx.fillRect(map.road.x, map.road.y, map.road.w, map.road.h);
 
+        // Red static edges
         ctx.fillStyle = "red";
-        ctx.fillRect(130, 0, 20, c.height);
+        ctx.fillRect(
+          map.edges.left.x,
+          map.edges.left.y,
+          map.edges.left.w,
+          map.edges.left.h
+        );
         ctx.fillStyle = "red";
-        ctx.fillRect(650, 0, 20, c.height);
+        ctx.fillRect(
+          map.edges.right.x,
+          map.edges.right.y,
+          map.edges.right.w,
+          map.edges.right.h
+        );
 
         // Left road border
         for (var i = 0; i < 20; ++i) {
           ctx.fillStyle = "white";
           ctx.fillRect(130, i * 60 + border, 20, 30);
+        }
+
+        // Right road border
+        for (var i = 0; i < 20; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(650, i * 60 + border, 20, 30);
         }
 
         // Left street stripes
@@ -90,12 +153,6 @@
         for (var i = 0; i < 10; ++i) {
           ctx.fillStyle = "white";
           ctx.fillRect(500, i * 100 + strips, 20, 50);
-        }
-
-        // Right road border
-        for (var i = 0; i < 20; ++i) {
-          ctx.fillStyle = "white";
-          ctx.fillRect(650, i * 60 + border, 20, 30);
         }
 
         strips += 10;
