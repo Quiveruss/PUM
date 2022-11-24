@@ -318,7 +318,7 @@
 
         ctx.font = "40px arial";
         ctx.fillStyle = "white";
-        ctx.fillText(`Speed: ${map.speed}`, 0, 80);
+        ctx.fillText(`Speed: ${map.speed.toFixed(2)}`, 0, 80);
       }
 
       function spawnBonus() {
@@ -454,11 +454,11 @@
       }
 
       function accelerate() {
-        map.dSpeed = 1;
+        map.dSpeed = 0.01;
       }
 
       function slowDown() {
-        map.dSpeed = -1;
+        map.dSpeed = -0.01;
       }
 
       function keyDown(e) {
@@ -497,7 +497,7 @@
           player.dy = 0;
         } else if (e.key === "a") {
           map.dSpeed = 0;
-        } else if (e.key === "a") {
+        } else if (e.key === "z") {
           map.dSpeed = 0;
         }
       }
