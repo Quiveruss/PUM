@@ -76,25 +76,16 @@
         },
 
         stripes: {
+          leftX: 300,
+          rightX: 500,
+          y: -200,
+          w: 20,
+          h: 50,
           amount: 10,
           dy: 0,
-          left: {
-            x: 650,
-            y: -200,
-            w: 20,
-            h: c.height + 400,
-          },
-          right: {
-            x: 650,
-            y: -200,
-            w: 20,
-            h: c.height + 400,
-          },
+          space: 90,
+          speed: 5,
         },
-
-        //-100,
-
-        //-200,
       };
 
       var obstacles = [];
@@ -163,24 +154,35 @@
 
         for (var i = 0; i < stripesAmount; ++i) {
           ctx.fillStyle = "white";
-          ctx.fillRect(300, i * 100 + strips, 20, 50);
+          ctx.fillRect(
+            map.stripes.leftX,
+            map.stripes.y + i * map.stripes.space + map.stripes.dy,
+            map.stripes.w,
+            map.stripes.h
+          );
         }
 
         // Right street stripes
         for (var i = 0; i < stripesAmount; ++i) {
           ctx.fillStyle = "white";
-          ctx.fillRect(500, i * 100 + strips, 20, 50);
+          ctx.fillRect(
+            map.stripes.rightX,
+            map.stripes.y + i * map.stripes.space + map.stripes.dy,
+            map.stripes.w,
+            map.stripes.h
+          );
         }
 
+        // Calculating new position of stripes and borders
         map.edgesWhite.dy += map.edgesWhite.speed;
-        strips += 10;
+        map.stripes.dy += map.stripes.speed;
 
         if (map.edgesWhite.dy === map.edgesWhite.space) {
           map.edgesWhite.dy = 0;
         }
 
-        if (strips === 100) {
-          strips = -100;
+        if (map.stripes.dy == map.stripes.space) {
+          map.stripes.dy = 0;
         }
       }
 
