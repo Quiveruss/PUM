@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lab6</title>
+    <title>Lab6_1</title>
   </head>
   <body>
-    <h1>Lab 6</h1>
+    <h1>Lab 6_1</h1>
 
     <canvas
       id="myCanvas"
@@ -36,6 +36,22 @@
         bonuses: 0,
       };
 
+      const map = {
+        grass: {
+          x: -200,
+          y: -200,
+          w: c.width + 400,
+          h: c.height + 400,
+        },
+
+        road: {
+          x: 150,
+          y: -200,
+          w: 500,
+          h: c.height + 400,
+        },
+      };
+
       var obstacles = [];
       var bullets = [];
       var bonuses = [];
@@ -46,14 +62,15 @@
 
       function drawScenery() {
         ctx.beginPath();
+
         ctx.fillStyle = "green";
-        ctx.fillRect(0, 0, 150, c.height);
+        ctx.fillRect(map.grass.x, map.grass.y, map.grass.w, map.grass.h);
+
+        ctx.fillStyle = "gray";
+        ctx.fillRect(map.road.x, map.road.y, map.road.w, map.road.h);
+
         ctx.fillStyle = "red";
         ctx.fillRect(130, 0, 20, c.height);
-        ctx.fillStyle = "gray";
-        ctx.fillRect(150, 0, 500, c.height);
-        ctx.fillStyle = "green";
-        ctx.fillRect(650, 0, 150, c.height);
         ctx.fillStyle = "red";
         ctx.fillRect(650, 0, 20, c.height);
 
