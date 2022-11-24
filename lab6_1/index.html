@@ -63,7 +63,21 @@
           },
         },
 
-        strips: {
+        edgesWhite: {
+          leftX: 130,
+          rightX: 650,
+          y: -200,
+          w: 20,
+          h: 30,
+          amount: 20,
+          dy: 0,
+          space: 60,
+          speed: 5,
+        },
+
+        stripes: {
+          amount: 10,
+          dy: 0,
           left: {
             x: 650,
             y: -200,
@@ -79,26 +93,15 @@
         },
 
         //-100,
-        edgesWhite: {
-          left: {
-            x: 130,
-            y: -200,
-            w: 20,
-            h: c.height + 400,
-          },
-          right: {
-            x: 650,
-            y: -200,
-            w: 20,
-            h: c.height + 400,
-          },
-        },
+
         //-200,
       };
 
       var obstacles = [];
       var bullets = [];
       var bonuses = [];
+
+      var strips = -100;
 
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -118,52 +121,66 @@
         // Red static edges
         ctx.fillStyle = "red";
         ctx.fillRect(
-          map.edges.left.x,
-          map.edges.left.y,
-          map.edges.left.w,
-          map.edges.left.h
+          map.edgesRed.left.x,
+          map.edgesRed.left.y,
+          map.edgesRed.left.w,
+          map.edgesRed.left.h
         );
         ctx.fillStyle = "red";
         ctx.fillRect(
-          map.edges.right.x,
-          map.edges.right.y,
-          map.edges.right.w,
-          map.edges.right.h
+          map.edgesRed.right.x,
+          map.edgesRed.right.y,
+          map.edgesRed.right.w,
+          map.edgesRed.right.h
         );
 
         // Left road border
-        for (var i = 0; i < 20; ++i) {
+        const edgesWhiteAmount = map.edgesWhite.amount;
+
+        for (var i = 0; i < edgesWhiteAmount; ++i) {
           ctx.fillStyle = "white";
-          ctx.fillRect(130, i * 60 + border, 20, 30);
+          ctx.fillRect(
+            map.edgesWhite.leftX,
+            map.edgesWhite.y + i * 60 + map.edgesWhite.dy,
+            map.edgesWhite.w,
+            map.edgesWhite.h
+          );
         }
 
         // Right road border
-        for (var i = 0; i < 20; ++i) {
+        for (var i = 0; i < edgesWhiteAmount; ++i) {
           ctx.fillStyle = "white";
-          ctx.fillRect(650, i * 60 + border, 20, 30);
+          ctx.fillRect(
+            map.edgesWhite.rightX,
+            map.edgesWhite.y + i * map.edgesWhite.space + map.edgesWhite.dy,
+            map.edgesWhite.w,
+            map.edgesWhite.h
+          );
         }
 
         // Left street stripes
-        for (var i = 0; i < 10; ++i) {
+        const stripesAmount = map.stripes.amount;
+
+        for (var i = 0; i < stripesAmount; ++i) {
           ctx.fillStyle = "white";
           ctx.fillRect(300, i * 100 + strips, 20, 50);
         }
 
         // Right street stripes
-        for (var i = 0; i < 10; ++i) {
+        for (var i = 0; i < stripesAmount; ++i) {
           ctx.fillStyle = "white";
           ctx.fillRect(500, i * 100 + strips, 20, 50);
         }
 
+        map.edgesWhite.dy += map.edgesWhite.speed;
         strips += 10;
-        border += 5;
+
+        if (map.edgesWhite.dy === map.edgesWhite.space) {
+          map.edgesWhite.dy = 0;
+        }
 
         if (strips === 100) {
           strips = -100;
-        }
-
-        if (border === 40) {
-          border = -200;
         }
       }
 
