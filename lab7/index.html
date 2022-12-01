@@ -20,15 +20,14 @@
       var ctx = c.getContext("2d");
 
       const player = {
-        x: 400,
-        y: 510,
-        w: 50,
-        h: 80,
+        x: 350,
+        y: 350,
+        w: 80,
+        h: 50,
         dx: 0,
         dy: 0,
         speed: 5,
         alive: true,
-        bonuses: 0,
       };
 
       const map = {
@@ -66,25 +65,12 @@
         ctx.fillRect(map.grass.x, map.grass.y, map.grass.w, map.grass.h);
 
         // Sky
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "lightblue";
         ctx.fillRect(map.sky.x, map.sky.y, map.sky.w, map.sky.h);
 
         // Main road
         ctx.fillStyle = "red";
         ctx.fillRect(map.road.x, map.road.y, map.road.w, map.road.h);
-
-        // Left road border
-        const edgesWhiteAmount = map.edgesWhite.amount;
-
-        for (var i = 0; i < edgesWhiteAmount; ++i) {
-          ctx.fillStyle = "white";
-          ctx.fillRect(
-            map.edgesWhite.leftX,
-            map.edgesWhite.y + i * 60 + map.edgesWhite.dy,
-            map.edgesWhite.w,
-            map.edgesWhite.h
-          );
-        }
       }
 
       function drawPlayer() {
