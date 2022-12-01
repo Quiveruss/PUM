@@ -112,21 +112,12 @@
       }
 
       function playerNewPos() {
-        player.x += player.dx;
+        player.y -= player.dy;
 
-        if (player.x < 150) {
-          player.x = 150;
+        if (player.y + player.h < map.road.y) {
+          player.y = map.road.y + player.h;
         }
-        if (player.x + player.w > 650) {
-          player.x = 650 - player.w;
-        }
-
-        player.y += player.dy;
-
-        if (player.y < 0) {
-          player.y = 0;
-        }
-        if (player.y + player.h > c.height) {
+        if (player.y > c.height) {
           player.y = c.height - player.h;
         }
       }
@@ -144,6 +135,7 @@
         drawScenery();
 
         drawPlayer();
+        playerNewPos();
 
         if (player.alive) {
           requestAnimationFrame(update);
@@ -152,8 +144,8 @@
         }
       }
 
-      function moveRight() {
-        player.dx = player.speed;
+      function jump() {
+        player.dy = player.speed;
       }
 
       function keyDown(e) {
@@ -164,13 +156,8 @@
       }
 
       function keyUp(e) {
-        if (
-          e.key === "ArrowRight" ||
-          e.key === "Right" ||
-          e.key === "ArrowLeft" ||
-          e.key === "Left"
-        ) {
-          player.dx = 0;
+        if (e.key === " ") {
+          player.dy = 0;
         }
       }
 
