@@ -31,6 +31,8 @@
       };
 
       const map = {
+        speed: 5,
+
         grass: {
           x: 0,
           y: 400,
@@ -43,6 +45,16 @@
           y: 400,
           w: c.width,
           h: 30,
+        },
+
+        stripes: {
+          x: -80,
+          y: 400,
+          w: 40,
+          h: 30,
+          amount: 12,
+          space: 80,
+          dx: 0,
         },
 
         sky: {
@@ -71,6 +83,26 @@
         // Main road
         ctx.fillStyle = "red";
         ctx.fillRect(map.road.x, map.road.y, map.road.w, map.road.h);
+
+        // Street stripes
+        const stripesAmount = map.stripes.amount;
+
+        for (var i = 0; i < stripesAmount; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(
+            map.stripes.x + i * map.stripes.space + map.stripes.dx,
+            map.stripes.y,
+            map.stripes.w,
+            map.stripes.h
+          );
+        }
+
+        // Moving stripes
+        map.stripes.dx -= map.speed;
+
+        if (Math.abs(map.stripes.dx) >= map.stripes.space) {
+          map.stripes.dx = 0;
+        }
       }
 
       function drawPlayer() {
