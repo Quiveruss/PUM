@@ -36,6 +36,7 @@
         rotateCount: 0,
         speed: 5,
         dSpeed: 0,
+        acceleration: 0.1,
 
         grass: {
           x: -200,
@@ -176,17 +177,21 @@
         map.edgesWhite.dy += map.speed;
         map.stripes.dy += map.speed;
 
-        if (map.edgesWhite.dy === map.edgesWhite.space) {
+        if (map.edgesWhite.dy >= map.edgesWhite.space) {
           map.edgesWhite.dy = 0;
         }
 
-        if (map.stripes.dy == map.stripes.space) {
+        if (map.stripes.dy >= map.stripes.space) {
           map.stripes.dy = 0;
         }
       }
 
       function calculateMapSpeed() {
         map.speed += map.dSpeed;
+
+        if (map.speed <= 0) {
+          map.speed = 0;
+        }
       }
 
       function drawPlayer() {
@@ -226,7 +231,7 @@
 
       function moveObstacles() {
         obstacles.forEach((obstacle) => {
-          obstacle.y += obstacle.speed;
+          obstacle.y += obstacle.speed + map.speed / 3;
         });
       }
 
@@ -343,7 +348,7 @@
 
       function moveBonuses() {
         bonuses.forEach((bonus) => {
-          bonus.y += bonus.speed;
+          bonus.y += bonus.speed + map.speed / 3;
         });
       }
 
@@ -368,14 +373,16 @@
       }
 
       function changeAngle() {
-        var indicator = Math.random();
-        const threshold1 = 0.3;
-        const threshold2 = 0.6;
+        if (map.speed > 0) {
+          var indicator = Math.random();
+          const threshold1 = 0.3;
+          const threshold2 = 0.6;
 
-        if (indicator < threshold1) {
-          map.rotateCount = 10;
-        } else if (indicator >= threshold1 && indicator < threshold2) {
-          map.rotateCount = -10;
+          if (indicator < threshold1) {
+            map.rotateCount = 10;
+          } else if (indicator >= threshold1 && indicator < threshold2) {
+            map.rotateCount = -10;
+          }
         }
       }
 
@@ -454,11 +461,11 @@
       }
 
       function accelerate() {
-        map.dSpeed = 0.01;
+        map.dSpeed = map.acceleration;
       }
 
       function slowDown() {
-        map.dSpeed = -0.01;
+        map.dSpeed = -map.acceleration;
       }
 
       function keyDown(e) {
