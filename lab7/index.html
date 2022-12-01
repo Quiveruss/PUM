@@ -69,6 +69,8 @@
         },
       };
 
+      var obstacles = [];
+
       function clear() {
         ctx.clearRect(0, 0, c.width, c.height);
       }
@@ -139,6 +141,60 @@
         ctx.fillText("Game over", c.width / 2, c.height / 2);
       }
 
+      function drawObstacles() {
+        obstacles.forEach((obstacle) => {
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.arc(obstacle.x, obstacle.y, obstacle.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveObstacles() {
+        obstacles.forEach((obstacle) => {
+          obstacle.x -= obstacle.speed + map.speed / 3;
+        });
+      }
+
+      function checkObstacles() {
+        obstacles = obstacles.filter((obstacle) => obstacle.x > 0 + obstacle.r);
+      }
+
+      function spawnObstacle() {
+        const size = 20;
+
+        if (Math.random() > 0.6) {
+          obstacles.push({
+            x: c.width - size,
+            y: map.road.y - size,
+            r: size,
+            speed: 3,
+            remove: false,
+          });
+        }
+      }
+
+      function detectCollisionCircleRect(circle, rect) {
+        if (
+          rect.x < circle.x &&
+          circle.x < rect.x + rect.w &&
+          rect.y < circle.y &&
+          circle.y < rect.y + rect.h
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      function checkDeath() {
+        obstacles.forEach((obstacle) => {
+          if (detectCollisionCircleRect(obstacle, player)) {
+            player.alive = false;
+          }
+        });
+      }
+
       function update() {
         clear();
 
@@ -146,6 +202,12 @@
 
         drawPlayer();
         playerNewPos();
+
+        drawObstacles();
+        moveObstacles();
+        checkObstacles();
+
+        checkDeath();
 
         if (player.alive) {
           requestAnimationFrame(update);
@@ -173,6 +235,7 @@
       update();
       document.addEventListener("keydown", keyDown);
       document.addEventListener("keyup", keyUp);
+      setInterval(spawnObstacle, 1000);
     </script>
   </body>
 </html>
