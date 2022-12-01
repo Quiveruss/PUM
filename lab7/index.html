@@ -28,6 +28,9 @@
         dy: 0,
         speed: 5,
         alive: true,
+        jumpAction: false,
+        jumpCount: 0,
+        jumpHeight: 120,
       };
 
       const map = {
@@ -113,8 +116,13 @@
       }
 
       function playerNewPos() {
-        if (player.dy != 0) {
-          player.y -= player.dy;
+        if (player.jumpAction) {
+          if (player.jumpCount < player.jumpHeight) {
+            player.jumpCount += map.gravity;
+            player.y -= map.gravity;
+          } else {
+            player.jumpAction = false;
+          }
         } else {
           player.y += map.gravity;
         }
@@ -147,7 +155,10 @@
       }
 
       function jump() {
-        player.dy = player.speed;
+        if (!player.jumpAction && player.y + player.h === map.road.y) {
+          player.jumpAction = true;
+          player.jumpCount = 0;
+        }
       }
 
       function keyDown(e) {
@@ -157,11 +168,7 @@
         }
       }
 
-      function keyUp(e) {
-        if (e.key === " ") {
-          player.dy = 0;
-        }
-      }
+      function keyUp(e) {}
 
       update();
       document.addEventListener("keydown", keyDown);
