@@ -32,6 +32,7 @@
 
       const map = {
         speed: 5,
+        gravity: 5,
 
         grass: {
           x: 0,
@@ -112,13 +113,14 @@
       }
 
       function playerNewPos() {
-        player.y -= player.dy;
-
-        if (player.y + player.h < map.road.y) {
-          player.y = map.road.y + player.h;
+        if (player.dy != 0) {
+          player.y -= player.dy;
+        } else {
+          player.y += map.gravity;
         }
-        if (player.y > c.height) {
-          player.y = c.height - player.h;
+
+        if (player.y + player.h > map.road.y) {
+          player.y = map.road.y - player.h;
         }
       }
 
