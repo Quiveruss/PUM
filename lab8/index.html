@@ -38,8 +38,8 @@
 
         for (var j = 0; j < board.xFields; ++j) {
           stonesPositions[i][j] = Array(2);
-          stonesPositions[i][j][0] = 30 + 70 * i;
-          stonesPositions[i][j][1] = 130 + 70 * j;
+          stonesPositions[i][j][0] = 60 + 60 * i;
+          stonesPositions[i][j][1] = 160 + 60 * j;
         }
       }
 
@@ -47,7 +47,10 @@
 
       for (var i = 0; i < board.yFields; ++i) {
         stones[i] = Array(board.xFields);
-        stones[i][j] = "w";
+
+        for (var j = 0; j < board.xFields; ++j) {
+          stones[i][j] = "x";
+        }
       }
 
       function clear() {
@@ -60,15 +63,15 @@
 
         for (var i = 0; i < board.yFields; ++i) {
           ctx.beginPath();
-          ctx.moveTo(130, 30 + 70 * i);
-          ctx.lineTo(690, 30 + 70 * i);
+          ctx.moveTo(160, 60 + 60 * i);
+          ctx.lineTo(640, 60 + 60 * i);
           ctx.stroke();
         }
 
         for (var i = 0; i < board.xFields; ++i) {
           ctx.beginPath();
-          ctx.moveTo(130 + 70 * i, 30);
-          ctx.lineTo(130 + 70 * i, 590);
+          ctx.moveTo(160 + 60 * i, 60);
+          ctx.lineTo(160 + 60 * i, 540);
           ctx.stroke();
         }
 
@@ -86,7 +89,7 @@
                 ctx.fillStyle = "black";
               }
 
-              ctx.arc(stonePosition[1], stonePosition[0], 30, 0, 2 * Math.PI);
+              ctx.arc(stonePosition[1], stonePosition[0], 20, 0, 2 * Math.PI);
               ctx.fill();
             }
           }
