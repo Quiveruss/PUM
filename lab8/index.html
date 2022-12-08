@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>7</title>
+  </head>
+  <body>
+    <h1>7</h1>
+
+    <canvas
+      id="myCanvas"
+      width="800"
+      height="600"
+      style="border: 3px solid black"
+    >
+      Your browser does not support the HTML canvas tag.
+    </canvas>
+
+    <script>
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      const player = {
+        x: 350,
+        y: 350,
+        w: 80,
+        h: 50,
+        dx: 0,
+        dy: 0,
+        speed: 5,
+        alive: true,
+        jumpAction: false,
+        jumpCount: 0,
+        jumpHeight: 120,
+      };
+
+      const map = {
+        speed: 5,
+        gravity: 5,
+
+        grass: {
+          x: 0,
+          y: 400,
+          w: c.width,
+          h: 200,
+        },
+
+        road: {
+          x: 0,
+          y: 400,
+          w: c.width,
+          h: 30,
+        },
+
+        stripes: {
+          x: -80,
+          y: 400,
+          w: 40,
+          h: 30,
+          amount: 12,
+          space: 80,
+          dx: 0,
+        },
+
+        sky: {
+          x: 0,
+          y: 0,
+          w: c.width,
+          h: 400,
+        },
+      };
+
+      var obstacles = [];
+
+      function clear() {
+        ctx.clearRect(0, 0, c.width, c.height);
+      }
+
+      function drawScenery() {
+        ctx.beginPath();
+
+        // Grass
+        ctx.fillStyle = "green";
+        ctx.fillRect(map.grass.x, map.grass.y, map.grass.w, map.grass.h);
+
+        // Sky
+        ctx.fillStyle = "lightblue";
+        ctx.fillRect(map.sky.x, map.sky.y, map.sky.w, map.sky.h);
+
+        // Main road
+        ctx.fillStyle = "red";
+        ctx.fillRect(map.road.x, map.road.y, map.road.w, map.road.h);
+
+        // Street stripes
+        const stripesAmount = map.stripes.amount;
+
+        for (var i = 0; i < stripesAmount; ++i) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(
+            map.stripes.x + i * map.stripes.space + map.stripes.dx,
+            map.stripes.y,
+            map.stripes.w,
+            map.stripes.h
+          );
+        }
+
+        // Moving stripes
+        map.stripes.dx -= map.speed;
+
+        if (Math.abs(map.stripes.dx) >= map.stripes.space) {
+          map.stripes.dx = 0;
+        }
+      }
+
+      function drawPlayer() {
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+      }
+
+      function playerNewPos() {
+        if (player.jumpAction) {
+          if (player.jumpCount < player.jumpHeight) {
+            player.jumpCount += map.gravity;
+            player.y -= map.gravity;
+          } else {
+            player.jumpAction = false;
+          }
+        } else {
+          player.y += map.gravity;
+        }
+
+        if (player.y + player.h > map.road.y) {
+          player.y = map.road.y - player.h;
+        }
+      }
+
+      function displayDeath() {
+        ctx.font = "70px arial";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("Game over", c.width / 2, c.height / 2);
+      }
+
+      function drawObstacles() {
+        obstacles.forEach((obstacle) => {
+          ctx.beginPath();
+          ctx.fillStyle = "black";
+          ctx.arc(obstacle.x, obstacle.y, obstacle.r, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+
+      function moveObstacles() {
+        obstacles.forEach((obstacle) => {
+          obstacle.x -= obstacle.speed + map.speed / 3;
+        });
+      }
+
+      function checkObstacles() {
+        obstacles = obstacles.filter((obstacle) => obstacle.x > 0 + obstacle.r);
+      }
+
+      function spawnObstacle() {
+        const size = 20;
+
+        if (Math.random() > 0.6) {
+          obstacles.push({
+            x: c.width - size,
+            y: map.road.y - size,
+            r: size,
+            speed: 3,
+            remove: false,
+          });
+        }
+      }
+
+      function detectCollisionCircleRect(circle, rect) {
+        if (
+          rect.x < circle.x &&
+          circle.x < rect.x + rect.w &&
+          rect.y < circle.y &&
+          circle.y < rect.y + rect.h
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      function checkDeath() {
+        obstacles.forEach((obstacle) => {
+          if (detectCollisionCircleRect(obstacle, player)) {
+            player.alive = false;
+          }
+        });
+      }
+
+      function update() {
+        clear();
+
+        drawScenery();
+
+        drawPlayer();
+        playerNewPos();
+
+        drawObstacles();
+        moveObstacles();
+        checkObstacles();
+
+        checkDeath();
+
+        if (player.alive) {
+          requestAnimationFrame(update);
+        } else {
+          displayDeath();
+        }
+      }
+
+      function jump() {
+        if (!player.jumpAction && player.y + player.h === map.road.y) {
+          player.jumpAction = true;
+          player.jumpCount = 0;
+        }
+      }
+
+      function keyDown(e) {
+        console.log(e.key);
+        if (e.key === " ") {
+          jump();
+        }
+      }
+
+      function keyUp(e) {}
+
+      update();
+      document.addEventListener("keydown", keyDown);
+      document.addEventListener("keyup", keyUp);
+      setInterval(spawnObstacle, 1000);
+    </script>
+  </body>
+</html>
