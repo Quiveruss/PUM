@@ -18,6 +18,8 @@
     <script>
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
+      var elemLeft = c.offsetLeft;
+      var elemTop = c.offsetTop;
 
       const board = {
         x: 0,
@@ -61,6 +63,15 @@
 
       function keyUp(e) {}
 
+      c.addEventListener(
+        "click",
+        function (event) {
+          var yVal = event.pageY - elemTop;
+          var xVal = event.pageX - elemLeft;
+          console.log(yVal, xVal);
+        },
+        false
+      );
       update();
     </script>
   </body>
