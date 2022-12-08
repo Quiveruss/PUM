@@ -122,7 +122,7 @@
                 (yVal - stonePosition[0]) ** 2 + (xVal - stonePosition[1]) ** 2
               );
 
-              if (clickDistance < 20) {
+              if (clickDistance < 20 && stones[i][j] === "x") {
                 stones[i][j] = currPlayer;
 
                 if (currPlayer === "w") {
