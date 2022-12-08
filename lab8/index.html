@@ -30,6 +30,8 @@
         xFields: 9,
       };
 
+      var currPlayer = "b";
+
       // Initialising stones' positions.
       var stonesPositions = Array(board.yFields);
 
@@ -112,6 +114,25 @@
           var yVal = event.pageY - elemTop;
           var xVal = event.pageX - elemLeft;
           console.log(yVal, xVal);
+
+          for (var i = 0; i < board.yFields; ++i) {
+            for (var j = 0; j < board.xFields; ++j) {
+              var stonePosition = stonesPositions[i][j];
+              clickDistance = Math.sqrt(
+                (yVal - stonePosition[0]) ** 2 + (xVal - stonePosition[1]) ** 2
+              );
+
+              if (clickDistance < 20) {
+                stones[i][j] = currPlayer;
+
+                if (currPlayer === "w") {
+                  currPlayer = "b";
+                } else {
+                  currPlayer = "w";
+                }
+              }
+            }
+          }
         },
         false
       );
