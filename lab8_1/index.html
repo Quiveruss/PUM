@@ -195,15 +195,21 @@
                 (yVal - stonePosition[0]) ** 2 + (xVal - stonePosition[1]) ** 2
               );
 
-              for (var iCheck = -1; iCheck < 2; iCheck += 2) {
-                for (var jCheck = -1; jCheck < 2; jCheck += 2) {
-                  if (checkDestroy(iCheck, jCheck, -1, -1)) {
-                    destroyStones(i, j);
-                  }
-                }
-              }
               if (clickDistance < 20 && stones[i][j] === "x") {
                 stones[i][j] = currPlayer;
+
+                if (checkDestroy(i - 1, j, -1, -1)) {
+                  destroyStones(i - 1, j);
+                }
+                if (checkDestroy(i, j + 1, -1, -1)) {
+                  destroyStones(i, j + 1);
+                }
+                if (checkDestroy(i + 1, j, -1, -1)) {
+                  destroyStones(i + 1, j);
+                }
+                if (checkDestroy(i, j - 1, -1, -1)) {
+                  destroyStones(i, j - 1);
+                }
 
                 if (currPlayer === "w") {
                   currPlayer = "b";
