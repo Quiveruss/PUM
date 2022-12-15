@@ -106,7 +106,7 @@
         requestAnimationFrame(update);
       }
 
-      function checkDestroy(i, j) {
+      function checkDestroy(i, j, fromI, fromJ) {
         var stone = stones[i][j];
         var otherPlayer = stone === "w" ? "b" : "w";
         var upOpposite = false;
@@ -137,15 +137,35 @@
           return false;
         }
 
-        upOpposite = upStone === otherPlayer ? true : checkRest();
-        rightOpposite = rightStone === otherPlayer ? true : checkRest();
-        downOpposite = downStone === otherPlayer ? true : checkRest();
-        leftOpposite = leftStone === otherPlayer ? true : checkRest();
-
-        if (upOpposite && rightOpposite && downOpposite && leftOpposite) {
+        if (i - 1 != fromI) {
+          upOpposite =
+            upStone === otherPlayer ? true : checkDestroy(i - 1, j, i, j);
         } else {
-          return false;
+          upOpposite = true;
         }
+
+        if (j + 1 != fromJ) {
+          rightOpposite =
+            rightStone === otherPlayer ? true : checkDestroy(i, j + 1, i, j);
+        } else {
+          rightOpposite = true;
+        }
+
+        if (i + 1 != fromI) {
+          downOpposite =
+            downStone === otherPlayer ? true : checkDestroy(i + 1, j, i, j);
+        } else {
+          downOpposite = true;
+        }
+
+        if (j - 1 != fromJ) {
+          leftOpposite =
+            leftStone === otherPlayer ? true : checkDestroy(i, j - 1, i, j);
+        } else {
+          leftOpposite = true;
+        }
+
+        return upOpposite && rightOpposite && downOpposite && leftOpposite;
       }
 
       function keyUp(e) {}
@@ -167,7 +187,7 @@
               if (clickDistance < 20 && stones[i][j] === "x") {
                 stones[i][j] = currPlayer;
 
-                checkDestroy(i, j);
+                checkDestroy(i, j, -1, -1);
 
                 if (currPlayer === "w") {
                   currPlayer = "b";
