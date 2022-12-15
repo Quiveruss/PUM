@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab 8</title>
+  </head>
+  <body>
+    <h1>Lab 8</h1>
+
+    <canvas
+      id="myCanvas"
+      width="800"
+      height="600"
+      style="border: 3px solid black"
+    >
+      Your browser does not support the HTML canvas tag.
+    </canvas>
+
+    <script>
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      var elemLeft = c.offsetLeft;
+      var elemTop = c.offsetTop;
+
+      const board = {
+        x: 0,
+        y: 0,
+        h: c.height,
+        w: c.width,
+        yFields: 9,
+        xFields: 9,
+      };
+
+      var currPlayer = "b";
+
+      // Initialising stones' positions.
+      var stonesPositions = Array(board.yFields);
+
+      for (var i = 0; i < board.yFields; ++i) {
+        stonesPositions[i] = Array(board.xFields);
+
+        for (var j = 0; j < board.xFields; ++j) {
+          stonesPositions[i][j] = Array(2);
+          stonesPositions[i][j][0] = 60 + 60 * i;
+          stonesPositions[i][j][1] = 160 + 60 * j;
+        }
+      }
+
+      var stones = Array(board.yFields);
+
+      for (var i = 0; i < board.yFields; ++i) {
+        stones[i] = Array(board.xFields);
+
+        for (var j = 0; j < board.xFields; ++j) {
+          stones[i][j] = "x";
+        }
+      }
+
+      function clear() {
+        ctx.clearRect(0, 0, c.width, c.height);
+      }
+
+      function drawBoard() {
+        ctx.fillStyle = "brown";
+        ctx.fillRect(board.x, board.y, board.w, board.h);
+
+        for (var i = 0; i < board.yFields; ++i) {
+          ctx.beginPath();
+          ctx.moveTo(160, 60 + 60 * i);
+          ctx.lineTo(640, 60 + 60 * i);
+          ctx.stroke();
+        }
+
+        for (var i = 0; i < board.xFields; ++i) {
+          ctx.beginPath();
+          ctx.moveTo(160 + 60 * i, 60);
+          ctx.lineTo(160 + 60 * i, 540);
+          ctx.stroke();
+        }
+
+        for (var i = 0; i < board.yFields; ++i) {
+          for (var j = 0; j < board.xFields; ++j) {
+            var stone = stones[i][j];
+
+            if (stone !== "x") {
+              var stonePosition = stonesPositions[i][j];
+              ctx.beginPath();
+
+              if (stone === "w") {
+                ctx.fillStyle = "white";
+              } else if (stone === "b") {
+                ctx.fillStyle = "black";
+              }
+
+              ctx.arc(stonePosition[1], stonePosition[0], 20, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+          }
+        }
+      }
+
+      function update() {
+        clear();
+
+        drawBoard();
+
+        requestAnimationFrame(update);
+      }
+
+      function keyUp(e) {}
+
+      c.addEventListener(
+        "click",
+        function (event) {
+          var yVal = event.pageY - elemTop;
+          var xVal = event.pageX - elemLeft;
+          console.log(yVal, xVal);
+
+          for (var i = 0; i < board.yFields; ++i) {
+            for (var j = 0; j < board.xFields; ++j) {
+              var stonePosition = stonesPositions[i][j];
+              clickDistance = Math.sqrt(
+                (yVal - stonePosition[0]) ** 2 + (xVal - stonePosition[1]) ** 2
+              );
+
+              if (clickDistance < 20 && stones[i][j] === "x") {
+                stones[i][j] = currPlayer;
+
+                if (currPlayer === "w") {
+                  currPlayer = "b";
+                } else {
+                  currPlayer = "w";
+                }
+              }
+            }
+          }
+        },
+        false
+      );
+
+      update();
+    </script>
+  </body>
+</html>
